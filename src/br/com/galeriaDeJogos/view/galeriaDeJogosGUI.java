@@ -110,16 +110,52 @@ public class galeriaDeJogosGUI {
 
         JPanel btnsPainel = new JPanel();
 
-        JButton uptdateBtn = new JButton("Atualizar Jogo");
-        JButton deleteBtn = new JButton("Deletar Jogo");
-        btnsPainel.add(uptdateBtn);
-        btnsPainel.add(deleteBtn);
+        JTextField idDeleteTextField = new JTextField();
+
+        JButton btnUpdate = new JButton("Atualizar Jogo");
+        JButton btnDelete = new JButton("Deletar Jogo");
+        btnsPainel.add(btnUpdate);
+        btnsPainel.add(btnDelete);
         btnsPainel.add(ordenacaoLabel);
 
         String[] ordenagemLista = {"","Gênero", "Plataforma", "Status"};
 
         JComboBox<String> ordenagem = new JComboBox<>(ordenagemLista);
         btnsPainel.add(ordenagem);
+
+        // Tela de update
+        JPanel updateLabelPanel = new JPanel(new GridLayout(0,1));
+        JPanel updatePanel = new JPanel(new GridLayout(0,1));
+        JPanel updateDiv = new JPanel();
+
+        JLabel idUpdateLabel = new JLabel("ID: ");
+        JTextField idUpdateTextField = new JTextField();
+
+        // Inputs
+        JTextField tituloUpdate = new JTextField();
+        JTextField anoLancamentoUpdate = new JTextField();
+
+        JComboBox<String> generoOpcoesUpdate = new JComboBox<>(generos);
+        JComboBox<String> plataformaOpcoesUpdate = new JComboBox<>(plataformas);
+        JComboBox<String> statusOpcoesUpdate = new JComboBox<>(status);
+
+        updateLabelPanel.add(tituloLabel);
+        updateLabelPanel.add(generoLabel);
+        updateLabelPanel.add(plataformaLabel);
+        updateLabelPanel.add(anoLancamentoLabel);
+        updateLabelPanel.add(statusLabel);
+        updateLabelPanel.add(idUpdateLabel);
+
+        updatePanel.add(tituloUpdate);
+        updatePanel.add(generoOpcoesUpdate);
+        updatePanel.add(plataformaOpcoesUpdate);
+        updatePanel.add(anoLancamentoUpdate);
+        updatePanel.add(statusOpcoesUpdate);
+        updatePanel.add(idUpdateTextField);
+
+        updateDiv.setLayout(new BorderLayout());
+        updateDiv.add(updateLabelPanel, BorderLayout.WEST);
+        updateDiv.add(updatePanel, BorderLayout.EAST);
 
         // Monta aba de listagem
         abaListagem.add(abaListagemLabel, BorderLayout.NORTH);
@@ -154,6 +190,46 @@ public class galeriaDeJogosGUI {
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(frame, "Erro ao Cadastrar Jogo: " + ex.getMessage());
                 }
+            }
+        });
+
+        btnUpdate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Jogos jogo = new Jogos();
+                JOptionPane.showConfirmDialog(
+                        frame,
+                        updateDiv,
+                        "Atualizar Jogo",
+                        JOptionPane.OK_CANCEL_OPTION
+
+
+                        );
+            }
+        });
+
+        btnDelete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               int option = JOptionPane.showConfirmDialog(frame,
+                    idDeleteTextField,
+                        "Digite o ID do Jogo: ",
+                       JOptionPane.OK_CANCEL_OPTION,
+                       JOptionPane.QUESTION_MESSAGE
+                );
+
+               if (option == JOptionPane.OK_OPTION){
+                   try{
+                       jogosDao.deletarJogoPorID(Integer.parseInt(idDeleteTextField.getText()));
+                       jogosDao.atualizarTabela(modelo, jogosDao,(String) ordenagem.getSelectedItem());
+                   } catch (NumberFormatException exception){
+                       System.out.println("Valor digitado não numérico");
+                   } catch (IndexOutOfBoundsException exception){
+                       System.out.println("Valor digitado não consta em sua lista de jogos.");
+                   }
+
+               }
+
             }
         });
 

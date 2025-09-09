@@ -97,7 +97,7 @@ public class JogosDAO {
             while (rset.next()){
                 Jogos jogo = new Jogos();
 
-                //Recuperar o id:
+                //Recderar o id:
                 jogo.setId(rset.getInt("id"));
 
                 //Recuperar o titulo:
