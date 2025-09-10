@@ -1,7 +1,6 @@
-package br.com.galeriaDeJogos.aplicacao;
+package br.com.galeriaDeJogos.test;
 
 import br.com.galeriaDeJogos.DAO.JogosDAO;
-import br.com.galeriaDeJogos.model.Jogos;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.

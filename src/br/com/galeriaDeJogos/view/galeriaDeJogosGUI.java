@@ -128,6 +128,13 @@ public class galeriaDeJogosGUI {
         JPanel updatePanel = new JPanel(new GridLayout(0,1));
         JPanel updateDiv = new JPanel();
 
+        // Labels
+        JLabel tituloLabelUpdate = new JLabel("Titulo: ");
+        JLabel generoLabelUpdate = new JLabel("Gênero: ");
+        JLabel plataformaLabelUpdate = new JLabel("Plataforma: ");
+        JLabel anoLancamentoLabelUpdate = new JLabel("Ano De Lançamento: ");
+        JLabel statusLabelUpdate = new JLabel("Status: ");
+
         JLabel idUpdateLabel = new JLabel("ID: ");
         JTextField idUpdateTextField = new JTextField();
 
@@ -139,11 +146,11 @@ public class galeriaDeJogosGUI {
         JComboBox<String> plataformaOpcoesUpdate = new JComboBox<>(plataformas);
         JComboBox<String> statusOpcoesUpdate = new JComboBox<>(status);
 
-        updateLabelPanel.add(tituloLabel);
-        updateLabelPanel.add(generoLabel);
-        updateLabelPanel.add(plataformaLabel);
-        updateLabelPanel.add(anoLancamentoLabel);
-        updateLabelPanel.add(statusLabel);
+        updateLabelPanel.add(tituloLabelUpdate);
+        updateLabelPanel.add(generoLabelUpdate);
+        updateLabelPanel.add(plataformaLabelUpdate);
+        updateLabelPanel.add(anoLancamentoLabelUpdate);
+        updateLabelPanel.add(statusLabelUpdate);
         updateLabelPanel.add(idUpdateLabel);
 
         updatePanel.add(tituloUpdate);
@@ -197,14 +204,42 @@ public class galeriaDeJogosGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Jogos jogo = new Jogos();
-                JOptionPane.showConfirmDialog(
+                int option = JOptionPane.showConfirmDialog(
                         frame,
                         updateDiv,
                         "Atualizar Jogo",
-                        JOptionPane.OK_CANCEL_OPTION
-
-
+                        JOptionPane.OK_CANCEL_OPTION,
+                        JOptionPane.PLAIN_MESSAGE
                         );
+
+                    if(option == JOptionPane.OK_OPTION){
+                        try{
+                            if (!tituloUpdate.getText().trim().isEmpty() && !anoLancamentoUpdate.getText().trim().isEmpty()){
+                                jogo.setTitulo(tituloUpdate.getText());
+                                jogo.setGenero((String) generoOpcoesUpdate.getSelectedItem());
+                                jogo.setPlataforma((String) plataformaOpcoesUpdate.getSelectedItem());
+                                jogo.setAnoLancamento(Integer.parseInt(anoLancamentoUpdate.getText()));
+                                jogo.setStatus((String) statusOpcoesUpdate.getSelectedItem());
+                                jogo.setId(Integer.parseInt(idUpdateTextField.getText()));
+
+                                boolean sucesso = jogosDao.atualizarJogo(jogo);
+                                if(sucesso){
+                                    JOptionPane.showMessageDialog(frame,"Jogo Atualizado com sucesso!");
+                                    jogosDao.atualizarTabela(modelo, jogosDao, (String) ordenagem.getSelectedItem());
+                                } else {
+                                    JOptionPane.showMessageDialog(frame, "ID não encontrado!");
+                                }
+                            } else {
+                                JOptionPane.showMessageDialog(frame,"Preencha todos os Campos!");
+                            }
+
+                        } catch (NumberFormatException ex){
+                            JOptionPane.showMessageDialog(frame, "Ano de lançamento inválido.");
+                        } catch (Exception ex){
+                            JOptionPane.showMessageDialog(frame, "Erro ao Atualizar: " + ex.getMessage());
+                        }
+                    }
+
             }
         });
 
@@ -220,12 +255,15 @@ public class galeriaDeJogosGUI {
 
                if (option == JOptionPane.OK_OPTION){
                    try{
-                       jogosDao.deletarJogoPorID(Integer.parseInt(idDeleteTextField.getText()));
-                       jogosDao.atualizarTabela(modelo, jogosDao,(String) ordenagem.getSelectedItem());
+                       boolean sucesso = jogosDao.deletarJogoPorID(Integer.parseInt(idDeleteTextField.getText()));
+                       if (sucesso){
+                           jogosDao.atualizarTabela(modelo, jogosDao,(String) ordenagem.getSelectedItem());
+                       } else {
+                           JOptionPane.showMessageDialog(frame, "ID não encontrado.");
+                       }
+
                    } catch (NumberFormatException exception){
-                       System.out.println("Valor digitado não numérico");
-                   } catch (IndexOutOfBoundsException exception){
-                       System.out.println("Valor digitado não consta em sua lista de jogos.");
+                      JOptionPane.showMessageDialog(frame,"Valor digitado não numérico");
                    }
 
                }

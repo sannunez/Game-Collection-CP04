@@ -140,7 +140,7 @@ public class JogosDAO {
 
 
     //UPDATE
-    public void atualizarJogo(Jogos jogo){
+    public boolean atualizarJogo(Jogos jogo){
         String sql = "UPDATE jogos SET titulo = ?, genero = ?, plataforma = ?, anoLancamento = ?, status = ? WHERE id = ?";
 
         Connection conn = null;
@@ -159,10 +159,14 @@ public class JogosDAO {
 
             pstm.setInt(6, jogo.getId());
 
-            pstm.execute();
+            int linhasAfetadas = pstm.executeUpdate();
+            return linhasAfetadas > 0;
 
         } catch (Exception e) {
             e.printStackTrace();
+            // Retorno em caso de falta de ID, ou seja o comando não executa.
+            return false;
+
         } finally {
             try {
                 if (pstm != null){
@@ -180,7 +184,7 @@ public class JogosDAO {
     }
 
     //DELETE
-    public void deletarJogoPorID(int id){
+    public boolean deletarJogoPorID(int id){
         String sql = "DELETE FROM jogos WHERE ID = ?";
 
         Connection conn = null;
@@ -192,10 +196,13 @@ public class JogosDAO {
 
             pstm.setInt(1, id);
 
-            pstm.execute();
+            int linhasAfetadas = pstm.executeUpdate();
+            return linhasAfetadas > 0;
 
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
+
         } finally {
             try {
                 if (pstm != null){
