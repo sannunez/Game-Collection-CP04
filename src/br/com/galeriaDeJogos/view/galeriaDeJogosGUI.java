@@ -1,6 +1,7 @@
 package br.com.galeriaDeJogos.view;
 
 import br.com.galeriaDeJogos.DAO.JogosDAO;
+import br.com.galeriaDeJogos.controller.CadastroJogo;
 import br.com.galeriaDeJogos.model.Jogos;
 
 import javax.swing.*;
@@ -14,6 +15,7 @@ import java.awt.event.ItemListener;
 
 public class galeriaDeJogosGUI {
     public static void main(String[] args) {
+
         // DAO
         JogosDAO jogosDao = new JogosDAO();
 
@@ -173,31 +175,35 @@ public class galeriaDeJogosGUI {
         btnCadastro.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    if (!titulo.getText().trim().isEmpty() && !anoLancamento.getText().trim().isEmpty()) {
-                        JogosDAO jogosDAO = new JogosDAO();
+//                try {
+//                    if (!titulo.getText().trim().isEmpty() && !anoLancamento.getText().trim().isEmpty()) {
+//                        JogosDAO jogosDAO = new JogosDAO();
+//
+//                        Jogos jogo = new Jogos();
+//                        jogo.setTitulo(titulo.getText());
+//                        jogo.setGenero((String) generoOpcoes.getSelectedItem());
+//                        jogo.setPlataforma((String) plataformaOpcoes.getSelectedItem());
+//                        jogo.setAnoLancamento(Integer.parseInt(anoLancamento.getText()));
+//                        jogo.setStatus((String) statusOpcoes.getSelectedItem());
+//
+//                        jogosDAO.cadastrarJogo(jogo);
+//                        JOptionPane.showMessageDialog(frame, "Jogo Cadastrado!");
+//
+//                        jogosDao.atualizarTabela(modelo, jogosDao, null);
+//
+//                    } else {
+//                        JOptionPane.showMessageDialog(frame, "Preencha todos os campos.");
+//                    }
+//                } catch (NumberFormatException ex) {
+//                    JOptionPane.showMessageDialog(frame, "Ano de lançamento inválido.");
+//                } catch (Exception ex) {
+//                    JOptionPane.showMessageDialog(frame, "Erro ao Cadastrar Jogo: " + ex.getMessage());
+//                }
 
-                        Jogos jogo = new Jogos();
-                        jogo.setTitulo(titulo.getText());
-                        jogo.setGenero((String) generoOpcoes.getSelectedItem());
-                        jogo.setPlataforma((String) plataformaOpcoes.getSelectedItem());
-                        jogo.setAnoLancamento(Integer.parseInt(anoLancamento.getText()));
-                        jogo.setStatus((String) statusOpcoes.getSelectedItem());
-
-                        jogosDAO.cadastrarJogo(jogo);
-                        JOptionPane.showMessageDialog(frame, "Jogo Cadastrado!");
-
-                        jogosDao.atualizarTabela(modelo, jogosDao, null);
-
-                    } else {
-                        JOptionPane.showMessageDialog(frame, "Preencha todos os campos.");
-                    }
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(frame, "Ano de lançamento inválido.");
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(frame, "Erro ao Cadastrar Jogo: " + ex.getMessage());
-                }
+                CadastroJogo.cadastrarJogo(frame, jogosDao, titulo, generoOpcoes, plataformaOpcoes, anoLancamento, statusOpcoes, modelo);
             }
+
+
         });
 
         btnUpdate.addActionListener(new ActionListener() {

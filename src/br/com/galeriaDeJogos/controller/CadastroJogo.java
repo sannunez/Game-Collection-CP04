@@ -7,9 +7,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public class CadastroJogo {
-    public CadastroJogo(){}
 
-    private static void cadastrarJogo(JFrame frame, JogosDAO jogosDao, JTextField titulo, JComboBox<String> genero, JComboBox<String> plataforma, JTextField ano, JComboBox<String> status, DefaultTableModel modelo) {
+    public static void cadastrarJogo(JFrame frame, JogosDAO jogosDao, JTextField titulo, JComboBox<String> genero, JComboBox<String> plataforma, JTextField ano, JComboBox<String> status, DefaultTableModel modelo) {
         try {
             if (!titulo.getText().trim().isEmpty() && !ano.getText().trim().isEmpty()) {
                 Jogos jogo = new Jogos();
