@@ -7,6 +7,7 @@ public class Jogos {
     private String plataforma;
     private int anoLancamento;
     private String status;
+    private double nota;
 
     public int getId() {
         return id;
@@ -54,5 +55,13 @@ public class Jogos {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public double getNota() {
+        return nota;
+    }
+
+    public void setNota(double nota) {
+        this.nota = nota;
     }
 }

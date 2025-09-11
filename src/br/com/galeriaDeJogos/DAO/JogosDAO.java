@@ -16,7 +16,7 @@ public class JogosDAO {
 
     //CREATE
     public void cadastrarJogo(Jogos jogo){
-        String sql = "INSERT INTO jogos(titulo, genero, plataforma, anoLancamento, status) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO jogos(titulo, genero, plataforma, anoLancamento, status, nota) VALUES (?, ?, ?, ?, ?, ?)";
 
         Connection conn = null;
 
@@ -35,6 +35,7 @@ public class JogosDAO {
             pstm.setString(3, jogo.getPlataforma());
             pstm.setInt(4, jogo.getAnoLancamento());
             pstm.setString(5, jogo.getStatus());
+            pstm.setDouble(6, jogo.getNota());
 
             //Executar query:
             pstm.execute();
@@ -67,16 +68,16 @@ public class JogosDAO {
         } else {
             switch (opcao) {
                 case "Gênero":
-                    sql = "SELECT id, titulo, genero, plataforma, anoLancamento, status FROM jogos ORDER BY genero ASC";
+                    sql = "SELECT id, titulo, genero, plataforma, anoLancamento, status, nota FROM jogos ORDER BY genero ASC";
                     break;
                 case "Plataforma":
-                    sql = "SELECT id, titulo, genero, plataforma, anoLancamento, status FROM jogos ORDER BY plataforma ASC";
+                    sql = "SELECT id, titulo, genero, plataforma, anoLancamento, status, nota FROM jogos ORDER BY plataforma ASC";
                     break;
                 case "Status":
-                    sql = "SELECT id, titulo, genero, plataforma, anoLancamento, status FROM jogos ORDER BY status ASC";
+                    sql = "SELECT id, titulo, genero, plataforma, anoLancamento, status, nota FROM jogos ORDER BY status ASC";
                     break;
                 default:
-                    sql = "SELECT id, titulo, genero, plataforma, anoLancamento, status FROM jogos";
+                    sql = "SELECT id, titulo, genero, plataforma, anoLancamento, status, nota FROM jogos";
                     break;
             }
         }
@@ -114,6 +115,9 @@ public class JogosDAO {
 
                 //Recuperar o Status:
                 jogo.setStatus(rset.getString("status"));
+
+                //Recuperar a Nota:
+                jogo.setNota(rset.getDouble("nota"));
 
                 jogos.add(jogo);
             }
@@ -234,7 +238,8 @@ public class JogosDAO {
                 jogo.getGenero(),
                 jogo.getPlataforma(),
                 jogo.getAnoLancamento(),
-                jogo.getStatus()
+                jogo.getStatus(),
+                jogo.getNota()
         });
     }
 }

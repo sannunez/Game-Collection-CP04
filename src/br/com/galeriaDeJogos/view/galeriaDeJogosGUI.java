@@ -1,7 +1,7 @@
 package br.com.galeriaDeJogos.view;
 
 import br.com.galeriaDeJogos.DAO.JogosDAO;
-import br.com.galeriaDeJogos.controller.CadastroJogo;
+import br.com.galeriaDeJogos.controller.Functions;
 import br.com.galeriaDeJogos.model.Jogos;
 
 import javax.swing.*;
@@ -39,10 +39,12 @@ public class galeriaDeJogosGUI {
         JLabel plataformaLabel = new JLabel("Plataforma: ");
         JLabel anoLancamentoLabel = new JLabel("Ano De Lançamento: ");
         JLabel statusLabel = new JLabel("Status: ");
+        JLabel notaLabel = new JLabel("Nota(0-10): ");
 
         // Inputs
         JTextField titulo = new JTextField();
         JTextField anoLancamento = new JTextField();
+        JTextField nota = new JTextField();
 
         String[] generos = {
                 "Ação", "Aventura", "Battle Royale", "Corrida", "Estratégia", "FPS",
@@ -58,6 +60,7 @@ public class galeriaDeJogosGUI {
         String[] status = {"Jogando", "Concluído", "Wishlist"};
         JComboBox<String> statusOpcoes = new JComboBox<>(status);
 
+
         // Painéis de organização
         JPanel cadastroLabelPanel = new JPanel(new GridLayout(0, 1));
         cadastroLabelPanel.add(tituloLabel);
@@ -65,6 +68,7 @@ public class galeriaDeJogosGUI {
         cadastroLabelPanel.add(plataformaLabel);
         cadastroLabelPanel.add(anoLancamentoLabel);
         cadastroLabelPanel.add(statusLabel);
+        cadastroLabelPanel.add(notaLabel);
 
         JPanel cadastroOptionsPanel = new JPanel(new GridLayout(0, 1));
         cadastroOptionsPanel.add(titulo);
@@ -72,6 +76,7 @@ public class galeriaDeJogosGUI {
         cadastroOptionsPanel.add(plataformaOpcoes);
         cadastroOptionsPanel.add(anoLancamento);
         cadastroOptionsPanel.add(statusOpcoes);
+        cadastroOptionsPanel.add(nota);
 
         JPanel btnCadastroPainel = new JPanel();
 
@@ -95,6 +100,7 @@ public class galeriaDeJogosGUI {
         modelo.addColumn("Plataforma");
         modelo.addColumn("Ano");
         modelo.addColumn("Status");
+        modelo.addColumn("Nota");
 
         JTable tabelaDeJogos = new JTable(modelo);
         JScrollPane scroll = new JScrollPane(tabelaDeJogos);
@@ -106,7 +112,8 @@ public class galeriaDeJogosGUI {
                     jogo.getGenero(),
                     jogo.getPlataforma(),
                     jogo.getAnoLancamento(),
-                    jogo.getStatus()
+                    jogo.getStatus(),
+                    jogo.getNota()
             });
         }
 
@@ -114,6 +121,7 @@ public class galeriaDeJogosGUI {
 
         JTextField idDeleteTextField = new JTextField();
 
+        // -- ADD BOTÃO PARA AVALIAR --
         JButton btnUpdate = new JButton("Atualizar Jogo");
         JButton btnDelete = new JButton("Deletar Jogo");
         btnsPainel.add(btnUpdate);
@@ -175,105 +183,21 @@ public class galeriaDeJogosGUI {
         btnCadastro.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                try {
-//                    if (!titulo.getText().trim().isEmpty() && !anoLancamento.getText().trim().isEmpty()) {
-//                        JogosDAO jogosDAO = new JogosDAO();
-//
-//                        Jogos jogo = new Jogos();
-//                        jogo.setTitulo(titulo.getText());
-//                        jogo.setGenero((String) generoOpcoes.getSelectedItem());
-//                        jogo.setPlataforma((String) plataformaOpcoes.getSelectedItem());
-//                        jogo.setAnoLancamento(Integer.parseInt(anoLancamento.getText()));
-//                        jogo.setStatus((String) statusOpcoes.getSelectedItem());
-//
-//                        jogosDAO.cadastrarJogo(jogo);
-//                        JOptionPane.showMessageDialog(frame, "Jogo Cadastrado!");
-//
-//                        jogosDao.atualizarTabela(modelo, jogosDao, null);
-//
-//                    } else {
-//                        JOptionPane.showMessageDialog(frame, "Preencha todos os campos.");
-//                    }
-//                } catch (NumberFormatException ex) {
-//                    JOptionPane.showMessageDialog(frame, "Ano de lançamento inválido.");
-//                } catch (Exception ex) {
-//                    JOptionPane.showMessageDialog(frame, "Erro ao Cadastrar Jogo: " + ex.getMessage());
-//                }
-
-                CadastroJogo.cadastrarJogo(frame, jogosDao, titulo, generoOpcoes, plataformaOpcoes, anoLancamento, statusOpcoes, modelo);
+                Functions.cadastrarFunction(frame, jogosDao, titulo, generoOpcoes, plataformaOpcoes, anoLancamento, nota, statusOpcoes, modelo);
             }
-
-
         });
 
         btnUpdate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Jogos jogo = new Jogos();
-                int option = JOptionPane.showConfirmDialog(
-                        frame,
-                        updateDiv,
-                        "Atualizar Jogo",
-                        JOptionPane.OK_CANCEL_OPTION,
-                        JOptionPane.PLAIN_MESSAGE
-                        );
-
-                    if(option == JOptionPane.OK_OPTION){
-                        try{
-                            if (!tituloUpdate.getText().trim().isEmpty() && !anoLancamentoUpdate.getText().trim().isEmpty()){
-                                jogo.setTitulo(tituloUpdate.getText());
-                                jogo.setGenero((String) generoOpcoesUpdate.getSelectedItem());
-                                jogo.setPlataforma((String) plataformaOpcoesUpdate.getSelectedItem());
-                                jogo.setAnoLancamento(Integer.parseInt(anoLancamentoUpdate.getText()));
-                                jogo.setStatus((String) statusOpcoesUpdate.getSelectedItem());
-                                jogo.setId(Integer.parseInt(idUpdateTextField.getText()));
-
-                                boolean sucesso = jogosDao.atualizarJogo(jogo);
-                                if(sucesso){
-                                    JOptionPane.showMessageDialog(frame,"Jogo Atualizado com sucesso!");
-                                    jogosDao.atualizarTabela(modelo, jogosDao, (String) ordenagem.getSelectedItem());
-                                } else {
-                                    JOptionPane.showMessageDialog(frame, "ID não encontrado!");
-                                }
-                            } else {
-                                JOptionPane.showMessageDialog(frame,"Preencha todos os Campos!");
-                            }
-
-                        } catch (NumberFormatException ex){
-                            JOptionPane.showMessageDialog(frame, "Ano de lançamento inválido.");
-                        } catch (Exception ex){
-                            JOptionPane.showMessageDialog(frame, "Erro ao Atualizar: " + ex.getMessage());
-                        }
-                    }
-
+                Functions.atualizarFunction(frame, updateDiv, jogosDao, tituloUpdate, anoLancamentoUpdate,idUpdateTextField, generoOpcoesUpdate, plataformaOpcoesUpdate, statusOpcoesUpdate, ordenagem, modelo);
             }
         });
 
         btnDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               int option = JOptionPane.showConfirmDialog(frame,
-                    idDeleteTextField,
-                        "Digite o ID do Jogo: ",
-                       JOptionPane.OK_CANCEL_OPTION,
-                       JOptionPane.QUESTION_MESSAGE
-                );
-
-               if (option == JOptionPane.OK_OPTION){
-                   try{
-                       boolean sucesso = jogosDao.deletarJogoPorID(Integer.parseInt(idDeleteTextField.getText()));
-                       if (sucesso){
-                           jogosDao.atualizarTabela(modelo, jogosDao,(String) ordenagem.getSelectedItem());
-                       } else {
-                           JOptionPane.showMessageDialog(frame, "ID não encontrado.");
-                       }
-
-                   } catch (NumberFormatException exception){
-                      JOptionPane.showMessageDialog(frame,"Valor digitado não numérico");
-                   }
-
-               }
-
+              Functions.deleteFunction(frame, jogosDao, idDeleteTextField, ordenagem, modelo);
             }
         });
 
@@ -283,6 +207,8 @@ public class galeriaDeJogosGUI {
                 jogosDao.atualizarTabela(modelo, jogosDao, (String) ordenagem.getSelectedItem());
             }
         });
+
+        // INSERIR AVALIARBTN ACTION LISTENER
 
         // ========== FINAL ==========
         tabbedPane.add("CADASTRAR JOGOS", abaCadastro);
