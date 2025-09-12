@@ -144,6 +144,7 @@ public class galeriaDeJogosGUI {
         JLabel plataformaLabelUpdate = new JLabel("Plataforma: ");
         JLabel anoLancamentoLabelUpdate = new JLabel("Ano De Lançamento: ");
         JLabel statusLabelUpdate = new JLabel("Status: ");
+        JLabel notaLabelUpdate = new JLabel("Nota(0-10)");
 
         JLabel idUpdateLabel = new JLabel("ID: ");
         JTextField idUpdateTextField = new JTextField();
@@ -151,6 +152,7 @@ public class galeriaDeJogosGUI {
         // Inputs
         JTextField tituloUpdate = new JTextField();
         JTextField anoLancamentoUpdate = new JTextField();
+        JTextField notaUpdate = new JTextField();
 
         JComboBox<String> generoOpcoesUpdate = new JComboBox<>(generos);
         JComboBox<String> plataformaOpcoesUpdate = new JComboBox<>(plataformas);
@@ -161,6 +163,7 @@ public class galeriaDeJogosGUI {
         updateLabelPanel.add(plataformaLabelUpdate);
         updateLabelPanel.add(anoLancamentoLabelUpdate);
         updateLabelPanel.add(statusLabelUpdate);
+        updateLabelPanel.add(notaLabelUpdate);
         updateLabelPanel.add(idUpdateLabel);
 
         updatePanel.add(tituloUpdate);
@@ -168,6 +171,7 @@ public class galeriaDeJogosGUI {
         updatePanel.add(plataformaOpcoesUpdate);
         updatePanel.add(anoLancamentoUpdate);
         updatePanel.add(statusOpcoesUpdate);
+        updatePanel.add(notaUpdate);
         updatePanel.add(idUpdateTextField);
 
         updateDiv.setLayout(new BorderLayout());
@@ -190,7 +194,7 @@ public class galeriaDeJogosGUI {
         btnUpdate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Functions.atualizarFunction(frame, updateDiv, jogosDao, tituloUpdate, anoLancamentoUpdate,idUpdateTextField, generoOpcoesUpdate, plataformaOpcoesUpdate, statusOpcoesUpdate, ordenagem, modelo);
+                Functions.atualizarFunction(frame, updateDiv, jogosDao, tituloUpdate, anoLancamentoUpdate,notaUpdate, idUpdateTextField, generoOpcoesUpdate, plataformaOpcoesUpdate, statusOpcoesUpdate, ordenagem, modelo);
             }
         });
 
