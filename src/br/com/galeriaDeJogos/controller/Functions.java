@@ -6,9 +6,21 @@ import br.com.galeriaDeJogos.model.Jogos;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-public class Functions extends Exception{
+/**
+ * Classe responsável por centralizar as funções principais de cadastro,
+ * atualização e exclusão de jogos na galeria.
+ *
+ * @author Guilherme Santos Nunes
+ * @version 1.0
+ */
+public class Functions {
 
-    public static void cadastrarFunction(JFrame frame, JogosDAO jogosDao, JTextField titulo, JComboBox<String> genero, JComboBox<String> plataformaOpcoes, JTextField anoLancamento, JTextField nota, JComboBox<String> status, DefaultTableModel modelo) {
+    /**
+     * Cadastra um novo jogo na galeria após validações.
+     */
+    public static void cadastrarFunction(JFrame frame, JogosDAO jogosDao, JTextField titulo, JComboBox<String> genero,
+                                         JComboBox<String> plataformaOpcoes, JTextField anoLancamento, JTextField nota,
+                                         JComboBox<String> status, DefaultTableModel modelo, DefaultTableModel modeloPerfil) {
         try {
             // Verifica se campos obrigatórios estão preenchidos
             if (titulo.getText().trim().isEmpty() || anoLancamento.getText().trim().isEmpty()) {
@@ -39,7 +51,7 @@ public class Functions extends Exception{
                 return;
             }
 
-            // Verifica se nota esta entre 0 e 10
+            // Verifica se nota está entre 0 e 10
             if (Double.parseDouble(nota.getText()) < 0 || Double.parseDouble(nota.getText()) > 10) {
                 JOptionPane.showMessageDialog(frame, "Nota deve estar entre 0 e 10.");
                 return;
@@ -65,8 +77,13 @@ public class Functions extends Exception{
         }
     }
 
-
-    public static void atualizarFunction(JFrame frame, JPanel updateDiv, JogosDAO jogosDao, JTextField tituloUpdate, JTextField anoLancamentoUpdate, JTextField notaUpdate, JTextField idUpdateTextField, JComboBox generoOpcoesUpdate, JComboBox plataformaOpcoesUpdate, JComboBox statusOpcoesUpdate, JComboBox ordenagem, DefaultTableModel modelo) {
+    /**
+     * Atualiza os dados de um jogo existente na galeria após validações.
+     */
+    public static void atualizarFunction(JFrame frame, JPanel updateDiv, JogosDAO jogosDao, JTextField tituloUpdate,
+                                         JTextField anoLancamentoUpdate, JTextField notaUpdate, JTextField idUpdateTextField,
+                                         JComboBox generoOpcoesUpdate, JComboBox plataformaOpcoesUpdate, JComboBox statusOpcoesUpdate,
+                                         JComboBox ordenagem, DefaultTableModel modelo, DefaultTableModel modeloPerfil) {
         int option = JOptionPane.showConfirmDialog(
                 frame,
                 updateDiv,
@@ -106,7 +123,7 @@ public class Functions extends Exception{
                     return;
                 }
 
-                // Verifica se nota esta entre 0 e 10
+                // Verifica se nota está entre 0 e 10
                 if (Double.parseDouble(notaUpdate.getText()) < 0 || Double.parseDouble(notaUpdate.getText()) > 10) {
                     JOptionPane.showMessageDialog(frame, "Nota deve estar entre 0 e 10.");
                     return;
@@ -118,7 +135,7 @@ public class Functions extends Exception{
                     return;
                 }
 
-                // Cadastra o jogo após validação
+                // Atualiza o jogo após validação
                 Jogos jogo = new Jogos();
                 jogo.setTitulo(tituloUpdate.getText());
                 jogo.setGenero((String) generoOpcoesUpdate.getSelectedItem());
@@ -144,9 +161,11 @@ public class Functions extends Exception{
         }
     }
 
-
-
-    public static void deleteFunction(JFrame frame, JogosDAO jogosDao, JTextField idDeleteTextField, JComboBox ordenagem, DefaultTableModel modelo){
+    /**
+     * Deleta um jogo da galeria a partir do ID informado.
+     */
+    public static void deleteFunction(JFrame frame, JogosDAO jogosDao, JTextField idDeleteTextField,
+                                      JComboBox ordenagem, DefaultTableModel modelo) {
         int option = JOptionPane.showConfirmDialog(frame,
                 idDeleteTextField,
                 "Digite o ID do Jogo: ",
@@ -154,19 +173,18 @@ public class Functions extends Exception{
                 JOptionPane.QUESTION_MESSAGE
         );
 
-        if (option == JOptionPane.OK_OPTION){
-            try{
+        if (option == JOptionPane.OK_OPTION) {
+            try {
                 boolean sucesso = jogosDao.deletarJogoPorID(Integer.parseInt(idDeleteTextField.getText()));
-                if (sucesso){
-                    jogosDao.atualizarTabela(modelo, jogosDao,(String) ordenagem.getSelectedItem());
+                if (sucesso) {
+                    jogosDao.atualizarTabela(modelo, jogosDao, (String) ordenagem.getSelectedItem());
                 } else {
                     JOptionPane.showMessageDialog(frame, "ID não encontrado.");
                 }
 
-            } catch (NumberFormatException exception){
-                JOptionPane.showMessageDialog(frame,"Valor digitado não numérico");
+            } catch (NumberFormatException exception) {
+                JOptionPane.showMessageDialog(frame, "Valor digitado não numérico");
             }
-
         }
     }
 }

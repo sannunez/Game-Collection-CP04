@@ -1,5 +1,12 @@
 package br.com.galeriaDeJogos.model;
 
+/**
+ * Classe que representa a entidade Jogo.
+ * Contém atributos e métodos de acesso (getters e setters).
+ *
+ * @author Guilherme Santos Nunes
+ * @version 1.0
+ */
 public class Jogos {
     private int id;
     private String titulo;
